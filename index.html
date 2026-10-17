@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dr. Kalam Awards - Student Achievers of Government College of Engineering, Salem">
+    <title>Dr. Kalam Awards | GCE Salem</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Embedded Modern Styling -->
+    <style>
+        /* ==========================================================================
+           1. CSS VARIABLES & THEME SETUP
+           ========================================================================== */
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-card-hover: #334155;
+            --bg-alt: #0b1120;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --gold-primary: #f59e0b;
+            --gold-light: #fbbf24;
+            --gold-dark: #b45309;
+            --accent-blue: #38bdf8;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --glass-bg: rgba(15, 23, 42, 0.85);
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --shadow-glow: 0 0 25px -5px rgba(245, 158, 11, 0.25);
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Light Theme Fallback Class */
+        body.light-theme {
+            --bg-dark: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f1f5f9;
+            --bg-alt: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Reset & Base Styles */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 5rem 1.5rem;
+        }
+
+        .alt-bg {
+            background-color: var(--bg-alt);
+        }
+
+        /* ==========================================================================
+           2. HEADER & NAVIGATION
+           ========================================================================== */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 2rem;
+            transition: var(--transition);
+        }
+
+        .logo {
+            text-align: center;
+        }
+
+        .logo h2 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            color: var(--text-primary);
+            background: linear-gradient(135deg, #fff 0%, var(--gold-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo p {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            transition: var(--transition);
+        }
+
+        nav a:hover {
+            color: var(--gold-light);
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .theme-toggle-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--gold-primary);
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .theme-toggle-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Mobile Nav Drawer */
+        .mobile-drawer {
+            display: none;
+            flex-direction: column;
+            background: var(--bg-card);
+            padding: 1rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            gap: 0.75rem;
+        }
+
+        .mobile-drawer.active {
+            display: flex;
+        }
+
+        /* ==========================================================================
+           3. HERO SECTION
+           ========================================================================== */
+        .hero {
+            position: relative;
+            padding: 8rem 1.5rem 6rem;
+            text-align: center;
+            background: radial-gradient(circle at 50% 20%, rgba(245, 158, 11, 0.15), transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(56, 189, 248, 0.1), transparent 40%),
+                        var(--bg-dark);
+            overflow: hidden;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.35rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: var(--gold-light);
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .hero h2 {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: clamp(1.25rem, 3vw, 2rem);
+            font-weight: 600;
+            color: var(--gold-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            max-width: 650px;
+            margin: 0 auto 2.5rem;
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+        }
+
+        .hero-btns {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.85rem 1.75rem;
+            border-radius: var(--radius-lg);
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .primary-btn {
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark));
+            color: #020617;
+            box-shadow: 0 10px 20px -5px rgba(245, 158, 11, 0.3);
+        }
+
+        .primary-btn:hover {
+            filter: brightness(1.1);
+            transform: translateY(-2px);
+        }
+
+        .secondary-btn {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .secondary-btn:hover {
+            border-color: var(--gold-primary);
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================================================
+           4. ABOUT & CARDS GRID
+           ========================================================================== */
+        .section-title {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .section-text {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 3.5rem;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 2.25rem;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(245, 158, 11, 0.4);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.25rem;
+            display: inline-block;
+        }
+
+        .card h3 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* ==========================================================================
+           5. PARTICIPANTS & WINNERS GRID
+           ========================================================================== */
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filters input, .filters select {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--radius-lg);
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            outline: none;
+            transition: var(--transition);
+            min-width: 220px;
+        }
+
+        .filters input:focus, .filters select:focus {
+            border-color: var(--gold-primary);
+        }
+
+        .student-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.75rem;
+        }
+
+        .student-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .student-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold-primary);
+        }
+
+        .student-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .student-avatar {
+            width: 3.25rem;
+            height: 3.25rem;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold-primary);
+        }
+
+        .student-info h4 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .student-badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.35rem;
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--gold-light);
+            display: inline-block;
+            margin-top: 0.2rem;
+        }
+
+        .project-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 1.25rem;
+            line-height: 1.4;
+        }
+
+        .winner-card {
+            border: 1px solid var(--gold-primary);
+            box-shadow: var(--shadow-glow);
+            background: linear-gradient(180deg, var(--bg-card) 0%, rgba(245, 158, 11, 0.05) 100%);
+        }
+
+        .winner-rank {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.25rem;
+        }
+
+        /* ==========================================================================
+           6. GALLERY & LIGHTBOX
+           ========================================================================== */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .gallery img:hover {
+            transform: scale(1.03);
+            border-color: var(--gold-primary);
+        }
+
+        /* Lightbox Overlay */
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 200;
+            background: rgba(2, 6, 23, 0.92);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 80vh;
+            border-radius: var(--radius-xl);
+            border: 2px solid var(--gold-primary);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            color: var(--text-primary);
+            font-size: 2rem;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+        }
+
+        /* ==========================================================================
+           7. DR. KALAM TRIBUTE QUOTE BOX
+           ========================================================================== */
+        .quote-box {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+            border: 1px solid var(--gold-primary);
+            border-radius: var(--radius-xl);
+            padding: 3.5rem 2.5rem;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .quote-box h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--gold-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .quote-box blockquote {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: clamp(1.25rem, 3vw, 1.75rem);
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .quote-box p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* ==========================================================================
+           8. CONTACT & SOCIALS
+           ========================================================================== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .contact-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 2.5rem;
+        }
+
+        .contact-card h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            color: var(--text-primary);
+        }
+
+        .contact-card p {
+            color: var(--text-secondary);
+            margin-bottom: 0.85rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .contact-card .button {
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+
+        .map-placeholder {
+            height: 100%;
+            min-height: 320px;
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .map-iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 320px;
+            border: none;
+            filter: grayscale(0.8) contrast(1.2);
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .social-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .social-card:hover {
+            border-color: var(--gold-primary);
+            transform: translateY(-3px);
+        }
+
+        .social-card h4 {
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .social-btn {
+            width: 100%;
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--gold-light);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            font-size: 0.85rem;
+        }
+
+        .social-btn:hover {
+            background: var(--gold-primary);
+            color: #020617;
+        }
+
+        /* ==========================================================================
+           9. FOOTER
+           ========================================================================== */
+        footer {
+            background: var(--bg-alt);
+            border-t: 1px solid var(--border-color);
+            padding: 4rem 1.5rem 2rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .footer-content h3 {
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-content p {
+            margin-bottom: 0.5rem;
+        }
+
+        .copyright {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.8rem;
+        }
+
+        /* Modal Popup */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 250;
+            background: rgba(2, 6, 23, 0.85);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            max-width: 550px;
+            width: 100%;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            cursor: pointer;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 900px) {
+            nav {
+                display: none;
+            }
+            .mobile-menu-toggle {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- =====================================
+         HEADER
+    ====================================== -->
+    <header>
+        <div class="logo">
+            <h2>DR. KALAM AWARDS</h2>
+            <p>Government College of Engineering, Salem</p>
+        </div>
+        <nav>
+            <a href="#home">Home</a> 
+            <a href="#about">About Awards</a>
+            <a href="#students">Participants</a>
+            <a href="#winners">Winners</a>
+            <a href="#departments">Departments</a>
+            <a href="#gallery">Gallery</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <button class="theme-toggle-btn" onclick="toggleTheme()" aria-label="Toggle Theme">
+                <i class="fa-solid fa-moon" id="themeIcon"></i>
+            </button>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle Navigation">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-drawer" id="mobileDrawer">
+        <a href="#home" onclick="toggleMobileMenu()">Home</a> 
+        <a href="#about" onclick="toggleMobileMenu()">About Awards</a>
+        <a href="#students" onclick="toggleMobileMenu()">Participants</a>
+        <a href="#winners" onclick="toggleMobileMenu()">Winners</a>
+        <a href="#departments" onclick="toggleMobileMenu()">Departments</a>
+        <a href="#gallery" onclick="toggleMobileMenu()">Gallery</a>
+        <a href="#contact" onclick="toggleMobileMenu()">Contact</a>
+    </div>
+
+    <!-- =====================================
+         HERO SECTION
+    ====================================== -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <span class="badge">GOVERNMENT COLLEGE OF ENGINEERING, SALEM</span>
+            <h1>DR. KALAM AWARDS</h1>
+            <h2>Celebrating Excellence, Innovation & Inspiration</h2>
+            <p>
+                Honouring the participating students and winners of the Dr. Kalam Awards from Government College of Engineering, Salem.
+            </p>
+            <div class="hero-btns">
+                <a href="#students" class="button primary-btn">
+                    <span>View Participants</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+                <a href="#winners" class="button secondary-btn">
+                    <span>View Winners 🏆</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- =====================================
+         ABOUT THE AWARDS
+    ====================================== -->
+    <section id="about" class="container">
+        <h2 class="section-title">About the Dr. Kalam Awards</h2>
+        <p class="section-text">
+            The Dr. Kalam Awards provide an opportunity to recognize and celebrate talented students for their participation, achievements, innovation, and academic excellence.
+        </p>
+
+        <div class="cards">
+            <div class="card">
+                <div class="card-icon">🏆</div>
+                <h3>Excellence</h3>
+                <p>Recognizing students who demonstrate outstanding performance, academic rigor, and dedication.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">💡</div>
+                <h3>Innovation</h3>
+                <p>Encouraging creative ideas, technical breakthroughs, and meaningful societal contributions.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🌟</div>
+                <h3>Inspiration</h3>
+                <p>Celebrating student role models whose achievements motivate and elevate the entire peer community.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- =====================================
+         PARTICIPANTS
+    ====================================== -->
+    <section id="students" class="container alt-bg">
+        <h2 class="section-title">Participating Students</h2>
+        <p class="section-text">
+            Explore the brilliant minds who participated in this year's Dr. Kalam Awards.
+        </p>
+
+        <!-- SEARCH AND FILTER -->
+        <div class="filters">
+            <input type="text" id="studentSearch" placeholder="🔍 Search student name or project..." onkeyup="filterStudents()">
+            <select id="departmentFilter" onchange="filterStudents()">
+                <option value="all">All Departments</option>
+                <option value="CSE">Computer Science & Engg</option>
+                <option value="CSE">Computer Science & Engg(AIML)</option>
+                <option value="ECE">Electronics & Communication Engg</option>
+                <option value="EEE">Electrical & Electronics Engg  </option>
+                <option value="MECH">Mechanical Engg</option>
+                <option value="CIVIL">Civil Engg</option>
+                <option value="METALLURGY">Metallurgical Engg</option>
+            </select>
+            <select id="categoryFilter" onchange="filterStudents()">
+                <option value="all">All Categories</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+            </select>
+        </div>
+
+        <!-- STUDENTS LOADED BY JAVASCRIPT -->
+        <div id="studentContainer" class="student-grid"></div>
+    </section>
+
+    <!-- =====================================
+         WINNERS
+    ====================================== -->
+    <section id="winners" class="container">
+        <h2 class="section-title">🏆 Dr. Kalam Award Winners</h2>
+        <p class="section-text">
+            Congratulations to the exceptional achievers selected as winners of this year's awards.
+        </p>
+        <div id="winnerContainer" class="student-grid"></div>
+    </section>
+
+    <!-- =====================================
+         DEPARTMENTS
+    ====================================== -->
+    <section id="departments" class="container alt-bg">
+        <h2 class="section-title">Departments</h2>
+        <p class="section-text">
+            Participating engineering departments representing GCE Salem.
+        </p>
+        <div id="departmentContainer" class="cards"></div>
+    </section>
+
+    <!-- =====================================
+         GALLERY
+    ====================================== -->
+    <section id="gallery" class="container">
+        <h2 class="section-title">Event Gallery</h2>
+        <p class="section-text">
+            Memorable moments from the Dr. Kalam Awards ceremony and exhibitions.
+        </p>
+        <div class="gallery">
+            <img src="participatants.jpg" alt="Dr. Kalam Awards participating students" onclick="openLightbox(this.src)">
+            <img src="partipants certificate.jpeg" alt="Dr. Kalam Awards event" onclick="openLightbox(this.src)">
+            <img src="winners.jpeg" alt="Dr. Kalam Awards students" onclick="openLightbox(this.src)">
+            <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80" alt="Dr. Kalam Awards ceremony" onclick="openLightbox(this.src)">
+        </div>
+    </section>
+
+    <!-- =====================================
+         DR. APJ ABDUL KALAM TRIBUTE
+    ====================================== -->
+    <section id="kalam" class="container">
+        <div class="quote-box">
+            <h2>Dr. A. P. J. Abdul Kalam</h2>
+            <blockquote>
+                "Dream, dream, dream. Dreams transform into thoughts and thoughts result in action."
+            </blockquote>
+            <p>
+                The Dr. Kalam Awards celebrate the timeless spirit of excellence, innovation, learning, and leadership inspired by the vision of our beloved former President.
+            </p>
+        </div>
+    </section>
+
+    <!-- =====================================
+         COLLEGE CONTACT
+    ====================================== -->
+    <section id="contact" class="container alt-bg">
+        <h2 class="section-title">Contact Us</h2>
+        <div class="contact-grid">
+            <div class="contact-card">
+                <h3>Government College of Engineering, Salem</h3>
+                <p><i class="fa-solid fa-location-dot" style="color: var(--gold-primary);"></i> NH-47 Salem to Bangalore Highways, Salem - 636011, Tamil Nadu, India.</p>
+                <p><i class="fa-solid fa-phone" style="color: var(--gold-primary);"></i> 0427 - 2346102, 2346157</p>
+                <p><i class="fa-solid fa-envelope" style="color: var(--gold-primary);"></i> adminoffice@gcesalem.edu.in</p>
+                <p><i class="fa-solid fa-envelope" style="color: var(--gold-primary);"></i> principal@gcesalem.edu.in</p>
+                <a href="https://gcesalem.edu.in/" target="_blank" class="button primary-btn">
+                    <span>Visit College Website</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+            </div>
+            <div class="map-placeholder">
+                <iframe 
+                    class="map-iframe"
+                    title="GCE Salem Location Map"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3907.037130283401!2d78.0772412!3d11.7589139!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3babf111812a647d%3A0x8cf6b7d722e0e4c6!2sGovernment%20College%20of%20Engineering%2C%20Salem!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- =====================================
+         SOCIAL MEDIA
+    ====================================== -->
+    <section class="container social-section">
+        <h2 class="section-title">Connect With Us</h2>
+        <div class="social-grid">
+            <div class="social-card">
+                <h4>Facebook</h4>
+                <a href="https://www.facebook.com/profile.php?id=61552827999562" target="_blank" class="button social-btn">Visit Facebook</a>
+            </div>
+            <div class="social-card">
+                <h4>Instagram</h4>
+                <a href="https://www.instagram.com/gce_salem_11/" target="_blank" class="button social-btn">Visit Instagram</a>
+            </div>
+            <div class="social-card">
+                <h4>LinkedIn</h4>
+                <a href="https://www.linkedin.com/in/government-college-of-engineering-salem-a986a6299/" target="_blank" class="button social-btn">Visit LinkedIn</a>
+            </div>
+            <div class="social-card">
+                <h4>YouTube</h4>
+                <a href="https://www.youtube.com/@gcesalem_11" target="_blank" class="button social-btn">Visit YouTube</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- =====================================
+         FOOTER
+    ====================================== -->
+    <footer>
+        <div class="footer-content">
+            <h3>DR. KALAM AWARDS</h3>
+            <p>Government College of Engineering, Salem</p>
+            <p>NH-47 Salem to Bangalore Highways, Salem - 636011, Tamil Nadu, India.</p>
+            <p class="copyright">© 2026 Government College of Engineering, Salem. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <button class="lightbox-close">&times;</button>
+        <img src="" id="lightboxImg" alt="Preview Image" onclick="event.stopPropagation()">
+    </div>
+
+    <!-- Student Detail Modal -->
+    <div class="modal" id="studentModal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- =====================================
+         JAVASCRIPT LOGIC
+    ====================================== -->
+    <script>
+        // --- Sample Data Set ---
+        const studentData = [
+            {
+                id: 1,
+                name: "Akash P",
+                dept: "EEE",
+                category: "2",
+                isWinner: false,
+                rank: "Winner",
+                avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80",
+            },
+            {
+                id: 2,
+                name: "Angel Fenishiya I",
+                dept: "EEE",
+                category:"2",
+                project: "Low-Power Biomedical Signal Processor",
+                isWinner: false,
+                rank: "winner",
+                avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80",
+            },
+            {
+                id: 3,
+                name: "Dhivakar G",
+                dept: "EEE",
+                category: "2",
+                isWinner: true,
+                rank: "Winner",
+                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+            },
+            {
+                id: 4,
+                name: "Gayathiri G",
+                dept: "CSE(AIML)",
+                category: "2",
+                isWinner: false,
+                avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80",
+            },
+            {
+                id: 5,
+                name: "Jositha S",
+                dept: "EEE",
+                category: "2",
+                isWinner: false,
+                avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+            },
+            {
+                id: 6,
+                name: "Kalaivaani AA",
+                dept: "EEE",
+                category: "2",
+                isWinner: false,
+                avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+            },
+            {
+                id: 7,
+                name: "Krithik J",
+                dept: "EEE",
+                category: "3",
+                isWinner: true,
+                rank:"winner",
+                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
+            },
+            {
+                id: 8,
+                name: "Lakshaya R",
+                dept: "EEE",
+                category: "2",
+                isWinner: false,
+                avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+            },
+            {
+                id: 9,
+                name: "Lakshaya G",
+                dept: "EEE",
+                category: "2",
+                isWinner: false,
+                avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+            },
+            {
+                id: 10,
+                name: "Lavanya EI",
+                dept: "EEE",
+                category: "3",
+                isWinner: true,
+                rank:"winner",
+                avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80",
+            },
+            {
+                id: 11,
+                name: "Muthukumar B",
+                dept: "EEE",
+                category: "3",
+                isWinner: true,
+                rank:"winner",
+                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
+            },
+            {
+                id: 12,
+                name: "Sanjeash P",
+                dept: "EEE",
+                category: "2",
+                isWinner: true,
+                rank:"winner",
+                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
+            },
+            {
+                id: 13,
+                name: "Sri Sibinaya B",
+                dept: "EEE",
+                category: "2",
+                isWinner: false,
+                avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+            },
+            {
+                id: 14,
+                name: "Subaharini G",
+                dept: "CSE(AIML)",
+                category: "2",
+                isWinner: false,
+                avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+            },
+            {
+                id: 15,
+                name: "Vignesh S",
+                dept: "EEE",
+                category: "2",
+                isWinner: false,
+                rank:"winner",
+                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
+            },
+            {
+                id: 16,
+                name: "Vishwanathan KA",
+                dept: "EEE",
+                category: "3",
+                isWinner: true,
+                rank:"winner",
+                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
+            },
+
+
+        ];
+
+        const departmentData = [
+            { name: "Computer Science & Engineering", icon: "💻", count: "32 Nominated Projects" },
+            { name: "Computer Science & Engineering(AIML)", icon: "🤖", count: "16 Nominated Projects" },
+            { name: "Electronics & Communication Engg", icon: "⚡", count: "28 Nominated Projects" },
+            { name: "Electrical & Electronics Engg", icon: "🔌", count: "24 Nominated Projects" },
+            { name: "Mechanical Engineering", icon: "⚙️", count: "22 Nominated Projects" },
+            { name: "Civil Engineering", icon: "🏗️", count: "16 Nominated Projects" },
+            { name: "Metallurgical Engineering", icon: "🔬", count: "14 Nominated Projects" }
+        ];
+
+        // --- Render Student Cards ---
+        function renderStudents(data) {
+            const container = document.getElementById('studentContainer');
+            container.innerHTML = '';
+
+            if (data.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">No matching participants found.</p>`;
+                return;
+            }
+
+            data.forEach(student => {
+                const card = document.createElement('div');
+                card.className = 'student-card';
+                card.innerHTML = `
+                    <div>
+                        <div class="student-header">
+                            <img src="${student.avatar}" alt="${student.name}" class="student-avatar">
+                            <div class="student-info">
+                                <h4>${student.name}</h4>
+                                <span class="student-badge">${student.dept}</span>
+                            </div>
+                        </div>
+                        <p class="project-title">${student.project}</p>
+                    </div>
+                    <button class="button secondary-btn" style="width: 100%; font-size: 0.8rem; padding: 0.5rem;" onclick="openModal(${student.id})">
+                        View Details
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // --- Render Winner Cards ---
+        function renderWinners() {
+            const container = document.getElementById('winnerContainer');
+            const winners = studentData.filter(s => s.isWinner);
+            container.innerHTML = '';
+
+            winners.forEach(winner => {
+                const card = document.createElement('div');
+                card.className = 'student-card winner-card';
+                card.innerHTML = `
+                    <span class="winner-rank">${winner.rank}</span>
+                    <div>
+                        <div class="student-header" style="margin-top: 0.5rem;">
+                            <img src="${winner.avatar}" alt="${winner.name}" class="student-avatar">
+                            <div class="student-info">
+                                <h4>${winner.name}</h4>
+                                <span class="student-badge">${winner.dept}</span>
+                            </div>
+                        </div>
+                        <p class="project-title" style="color: var(--text-primary); font-weight: 700;">"${winner.project}"</p>
+                    </div>
+                    <button class="button primary-btn" style="width: 100%; font-size: 0.8rem; padding: 0.6rem; margin-top: 1rem;" onclick="openModal(${winner.id})">
+                        View Submission
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // --- Render Departments ---
+        function renderDepartments() {
+            const container = document.getElementById('departmentContainer');
+            container.innerHTML = '';
+
+            departmentData.forEach(dept => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.style.display = 'flex';
+                card.style.alignItems = 'center';
+                card.style.gap = '1.25rem';
+                card.style.padding = '1.5rem';
+                card.innerHTML = `
+                    <div style="font-size: 2.2rem;">${dept.icon}</div>
+                    <div>
+                        <h3 style="font-size: 1.05rem; margin-bottom: 0.2rem;">${dept.name}</h3>
+                        <p style="font-size: 0.85rem; color: var(--gold-primary); font-weight: 600;">${dept.count}</p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // --- Live Search & Filter Logic ---
+        function filterStudents() {
+            const query = document.getElementById('studentSearch').value.toLowerCase();
+            const dept = document.getElementById('departmentFilter').value;
+            const cat = document.getElementById('categoryFilter').value;
+
+            const filtered = studentData.filter(s => {
+                const matchesSearch = s.name.toLowerCase().includes(query) || s.project.toLowerCase().includes(query);
+                const matchesDept = (dept === 'all') || (s.dept === dept);
+                const matchesCat = (cat === 'all') || (s.category === cat);
+                return matchesSearch && matchesDept && matchesCat;
+            });
+
+            renderStudents(filtered);
+        }
+
+        // --- Modal Popups ---
+        function openModal(id) {
+            const student = studentData.find(s => s.id === id);
+            if (!student) return;
+
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = `
+                <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem;">
+                    <img src="${student.avatar}" style="width: 4rem; height: 4rem; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold-primary);">
+                    <div>
+                        <h3 style="font-size: 1.3rem; color: var(--text-primary);">${student.name}</h3>
+                        <span class="student-badge">${student.dept} Department</span>
+                    </div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                    <div>
+                        <strong style="color: var(--gold-primary); font-size: 0.85rem; text-transform: uppercase;">Project Title</strong>
+                        <p style="color: var(--text-primary); font-weight: 600; font-size: 1.05rem; margin-top: 0.2rem;">${student.project}</p>
+                    </div>
+                    <div>
+                        <strong style="color: var(--gold-primary); font-size: 0.85rem; text-transform: uppercase;">Project Abstract</strong>
+                        <p style="color: var(--text-secondary); font-size: 0.95rem; margin-top: 0.3rem; line-height: 1.6; background: var(--bg-dark); padding: 1rem; border-radius: 0.75rem;">${student.abstract}</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('studentModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('studentModal').classList.remove('active');
+        }
+
+        // --- Lightbox Handler ---
+        function openLightbox(src) {
+            document.getElementById('lightboxImg').src = src;
+            document.getElementById('lightbox').classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        // --- Theme & Nav Toggle ---
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            const themeIcon = document.getElementById('themeIcon');
+            if (document.body.classList.contains('light-theme')) {
+                themeIcon.className = "fa-solid fa-sun";
+            } else {
+                themeIcon.className = "fa-solid fa-moon";
+            }
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobileDrawer').classList.toggle('active');
+        }
+
+        // --- Initialize Page ---
+        window.onload = function() {
+            renderStudents(studentData);
+            renderWinners();
+            renderDepartments();
+        };
+    </script>
+</body>
+</html>
