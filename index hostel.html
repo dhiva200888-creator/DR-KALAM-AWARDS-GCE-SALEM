@@ -1,0 +1,1241 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>SmartHostel</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #eef3f8;
+}
+
+header {
+    background: #1565c0;
+    color: white;
+    text-align: center;
+    padding: 25px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+.container {
+    max-width: 700px;
+    margin: 25px auto;
+    padding: 15px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.10);
+}
+
+h2 {
+    color: #1565c0;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+input,
+select,
+button {
+    width: 100%;
+    padding: 13px;
+    margin-top: 7px;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+input,
+select {
+    border: 1px solid #ccc;
+}
+
+button {
+    border: none;
+    background: #1565c0;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background: #0d47a1;
+}
+
+button:disabled {
+    background: #999;
+    cursor: not-allowed;
+}
+
+.status {
+    margin-top: 15px;
+    padding: 14px;
+    border-radius: 8px;
+    background: #edf3f8;
+}
+
+.success {
+    background: #dff5e4;
+    color: #176b2c;
+}
+
+.error {
+    background: #ffe1e1;
+    color: #a00000;
+}
+
+.info {
+    background: #e3f0ff;
+    color: #145da0;
+}
+
+.warden-number {
+    background: #f1f7ff;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+<h1>🏫 SmartHostel</h1>
+
+<p>
+Club Attendance & Hostel Notification System
+</p>
+
+</header>
+
+
+<div class="container">
+
+
+<!-- ==================================
+     WARDEN SMS INFORMATION
+================================== -->
+
+<div class="card">
+
+<h2>📱 Warden SMS Notification</h2>
+
+<p>
+Every verified club attendance will be sent
+to the registered warden mobile number by SMS.
+</p>
+
+<div class="warden-number">
+
+Warden Mobile:
+<strong>8072549048</strong>
+
+</div>
+
+<div id="smsStatus"
+class="status info">
+
+SMS notification will be sent automatically
+after attendance verification.
+
+</div>
+
+</div>
+
+
+<!-- ==================================
+     OPTIONAL WARDEN FCM NOTIFICATION
+================================== -->
+
+<div class="card">
+
+<h2>🔔 Warden Browser Notification</h2>
+
+<p>
+Register the warden's browser if you also want
+Firebase browser notifications.
+</p>
+
+<button onclick="registerWarden()">
+
+🔔 Enable Warden Notifications
+
+</button>
+
+<div id="fcmStatus"
+class="status">
+
+Warden device not registered.
+
+</div>
+
+</div>
+
+
+<!-- ==================================
+     STUDENT ATTENDANCE
+================================== -->
+
+<div class="card">
+
+<h2>👩‍🎓 Student Attendance</h2>
+
+
+<label>
+Student Name
+</label>
+
+<input
+id="studentName"
+placeholder="Enter student name"
+>
+
+
+<label>
+Register Number
+</label>
+
+<input
+id="registerNo"
+placeholder="Enter register number"
+>
+
+
+<label>
+Select Club
+</label>
+
+<select id="club">
+
+<option value="">
+Select Club
+</option>
+
+<option>
+GECO TECH CLUB
+</option>
+
+<option>
+ARTS CLUB
+</option>
+
+<option>
+DANCE CLUB
+</option>
+
+<option>
+MUSIC CLUB
+</option>
+
+<option>
+BIS CLUB
+</option>
+
+<option>
+ENGLISH CLUB
+</option>
+
+<option>
+TAMIL CLUB
+</option>
+
+</select>
+
+
+<button onclick="startAttendance()">
+
+▶ Start Attendance
+
+</button>
+
+
+<div id="gpsStatus"
+class="status">
+
+GPS verification not started.
+
+</div>
+
+
+<button
+id="gpsButton"
+onclick="checkGPS()"
+disabled
+>
+
+📍 Verify GPS
+
+</button>
+
+
+<label>
+Club Code
+</label>
+
+<input
+id="clubCode"
+placeholder="Enter club code"
+disabled
+>
+
+
+<button
+id="verifyButton"
+onclick="verifyClub()"
+disabled
+>
+
+🔳 Verify Club
+
+</button>
+
+
+<div id="clubStatus"
+class="status">
+
+Club verification not completed.
+
+</div>
+
+
+<div id="attendanceStatus"
+class="status">
+
+Attendance not submitted.
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ==================================
+     FIREBASE JAVASCRIPT
+================================== -->
+
+<script type="module">
+
+
+/* ==================================
+   FIREBASE IMPORTS
+================================== */
+
+import {
+    initializeApp
+}
+
+from
+"https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+
+
+import {
+
+    getFirestore,
+    collection,
+    addDoc,
+    doc,
+    setDoc
+
+}
+
+from
+"https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+
+import {
+
+    getMessaging,
+    getToken,
+    onMessage
+
+}
+
+from
+"https://www.gstatic.com/firebasejs/12.3.0/firebase-messaging.js";
+
+
+/* ==================================
+   FIREBASE CONFIGURATION
+================================== */
+
+const firebaseConfig = {
+
+    apiKey:
+        "YOUR_API_KEY",
+
+    authDomain:
+        "YOUR_PROJECT.firebaseapp.com",
+
+    projectId:
+        "YOUR_PROJECT_ID",
+
+    storageBucket:
+        "YOUR_PROJECT.firebasestorage.app",
+
+    messagingSenderId:
+        "YOUR_SENDER_ID",
+
+    appId:
+        "YOUR_APP_ID"
+};
+
+
+/* ==================================
+   INITIALIZE FIREBASE
+================================== */
+
+const app =
+    initializeApp(firebaseConfig);
+
+const db =
+    getFirestore(app);
+
+const messaging =
+    getMessaging(app);
+
+
+/* ==================================
+   FCM VAPID KEY
+================================== */
+
+const VAPID_KEY =
+    "YOUR_PUBLIC_VAPID_KEY";
+
+
+/* ==================================
+   WARDEN MOBILE NUMBER
+================================== */
+
+const WARDEN_MOBILE =
+    "8072549048";
+
+
+/* ==================================
+   CLUB INFORMATION
+================================== */
+
+const clubs = {
+
+    "GECO TECH CLUB": {
+
+        latitude:
+            11.7125971,
+
+        longitude:
+            78.0890946,
+
+        code:
+            "GECOTECH123"
+    },
+
+
+    "ARTS CLUB": {
+
+        latitude:
+            11.0175,
+
+        longitude:
+            76.9565,
+
+        code:
+            "ARTS123"
+    },
+
+
+    "DANCE CLUB": {
+
+        latitude:
+            11.7159030,
+
+        longitude:
+            78.0863816,
+
+        code:
+            "DANCE123"
+    },
+
+
+    "MUSIC CLUB": {
+
+        latitude:
+            11.7144536,
+
+        longitude:
+            78.0836132,
+
+        code:
+            "MUSIC123"
+    },
+
+
+    "BIS CLUB": {
+
+        latitude:
+            11.0190,
+
+        longitude:
+            76.9580,
+
+        code:
+            "BIS123"
+    },
+
+
+    "ENGLISH CLUB": {
+
+        latitude:
+            11.0190,
+
+        longitude:
+            76.9580,
+
+        code:
+            "ENGLISH123"
+    },
+
+
+    "TAMIL CLUB": {
+
+        latitude:
+            11.0190,
+
+        longitude:
+            76.9580,
+
+        code:
+            "TAMIL123"
+    }
+
+};
+
+
+/* ==================================
+   VARIABLES
+================================== */
+
+let student = {};
+
+let gpsVerified = false;
+
+let clubVerified = false;
+
+
+/* ==================================
+   WARDEN DEVICE REGISTRATION
+================================== */
+
+window.registerWarden =
+async function () {
+
+    try {
+
+        if (!("Notification" in window)) {
+
+            throw new Error(
+                "This browser does not support notifications."
+            );
+        }
+
+
+        const permission =
+            await Notification.requestPermission();
+
+
+        if (permission !== "granted") {
+
+            throw new Error(
+                "Notification permission was denied."
+            );
+        }
+
+
+        const registration =
+            await navigator.serviceWorker.register(
+                "/firebase-messaging-sw.js"
+            );
+
+
+        const token =
+            await getToken(
+
+                messaging,
+
+                {
+                    vapidKey:
+                        VAPID_KEY,
+
+                    serviceWorkerRegistration:
+                        registration
+                }
+
+            );
+
+
+        if (!token) {
+
+            throw new Error(
+                "FCM token was not generated."
+            );
+        }
+
+
+        await setDoc(
+
+            doc(
+
+                db,
+
+                "wardenTokens",
+
+                encodeURIComponent(token)
+
+            ),
+
+            {
+
+                token:
+                    token,
+
+                mobile:
+                    WARDEN_MOBILE,
+
+                active:
+                    true,
+
+                updatedAt:
+                    new Date()
+
+            }
+
+        );
+
+
+        document.getElementById(
+            "fcmStatus"
+        ).className =
+            "status success";
+
+
+        document.getElementById(
+            "fcmStatus"
+        ).innerHTML =
+
+            "✅ Warden device registered." +
+            "<br><br>" +
+            "Mobile: " +
+            WARDEN_MOBILE;
+
+    }
+
+
+    catch(error) {
+
+        console.error(error);
+
+
+        document.getElementById(
+            "fcmStatus"
+        ).className =
+            "status error";
+
+
+        document.getElementById(
+            "fcmStatus"
+        ).innerHTML =
+
+            "❌ " +
+            error.message;
+
+    }
+
+};
+
+
+/* ==================================
+   FOREGROUND NOTIFICATION
+================================== */
+
+onMessage(
+
+    messaging,
+
+    (payload) => {
+
+        console.log(
+            "FCM message:",
+            payload
+        );
+
+
+        const title =
+            payload.notification?.title ||
+            "SmartHostel";
+
+
+        const body =
+            payload.notification?.body ||
+            "New attendance received.";
+
+
+        document.getElementById(
+            "fcmStatus"
+        ).className =
+            "status success";
+
+
+        document.getElementById(
+            "fcmStatus"
+        ).innerHTML =
+
+            "🔔 " +
+            title +
+            "<br>" +
+            body;
+
+    }
+
+);
+
+
+/* ==================================
+   START ATTENDANCE
+================================== */
+
+window.startAttendance =
+function () {
+
+    const name =
+        document.getElementById(
+            "studentName"
+        ).value.trim();
+
+
+    const registerNo =
+        document.getElementById(
+            "registerNo"
+        ).value.trim();
+
+
+    const club =
+        document.getElementById(
+            "club"
+        ).value;
+
+
+    if (!name || !registerNo || !club) {
+
+        alert(
+            "Please enter all details."
+        );
+
+        return;
+    }
+
+
+    student = {
+
+        name:
+            name,
+
+        registerNo:
+            registerNo,
+
+        club:
+            club
+
+    };
+
+
+    gpsVerified = false;
+
+    clubVerified = false;
+
+
+    document.getElementById(
+        "gpsButton"
+    ).disabled = false;
+
+
+    document.getElementById(
+        "gpsStatus"
+    ).className =
+        "status info";
+
+
+    document.getElementById(
+        "gpsStatus"
+    ).innerHTML =
+
+        "Ready for GPS verification.";
+
+};
+
+
+/* ==================================
+   GPS VERIFICATION
+================================== */
+
+window.checkGPS =
+function () {
+
+    if (!navigator.geolocation) {
+
+        alert(
+            "GPS is not supported by this browser."
+        );
+
+        return;
+    }
+
+
+    document.getElementById(
+        "gpsStatus"
+    ).innerHTML =
+
+        "📍 Checking GPS location...";
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(position) {
+
+            const userLat =
+                position.coords.latitude;
+
+
+            const userLng =
+                position.coords.longitude;
+
+
+            const club =
+                clubs[student.club];
+
+
+            const distance =
+                calculateDistance(
+
+                    userLat,
+                    userLng,
+
+                    club.latitude,
+                    club.longitude
+
+                );
+
+
+            // 150 metre allowed radius
+
+            if (distance <= 150) {
+
+                gpsVerified = true;
+
+
+                document.getElementById(
+                    "gpsStatus"
+                ).className =
+                    "status success";
+
+
+                document.getElementById(
+                    "gpsStatus"
+                ).innerHTML =
+
+                    "✅ GPS verified." +
+                    "<br>" +
+                    "Distance: " +
+                    Math.round(distance) +
+                    " metres";
+
+
+                document.getElementById(
+                    "clubCode"
+                ).disabled = false;
+
+
+                document.getElementById(
+                    "verifyButton"
+                ).disabled = false;
+
+            }
+
+
+            else {
+
+                gpsVerified = false;
+
+
+                document.getElementById(
+                    "gpsStatus"
+                ).className =
+                    "status error";
+
+
+                document.getElementById(
+                    "gpsStatus"
+                ).innerHTML =
+
+                    "❌ You are outside the club area." +
+                    "<br>" +
+                    "Distance: " +
+                    Math.round(distance) +
+                    " metres";
+
+            }
+
+        },
+
+
+        function(error) {
+
+            document.getElementById(
+                "gpsStatus"
+            ).className =
+                "status error";
+
+
+            document.getElementById(
+                "gpsStatus"
+            ).innerHTML =
+
+                "❌ GPS Error: " +
+                error.message;
+
+        },
+
+
+        {
+
+            enableHighAccuracy:
+                true,
+
+            timeout:
+                15000,
+
+            maximumAge:
+                0
+
+        }
+
+    );
+
+};
+
+
+/* ==================================
+   DISTANCE CALCULATION
+================================== */
+
+function calculateDistance(
+
+    lat1,
+    lon1,
+    lat2,
+    lon2
+
+) {
+
+    const R =
+        6371000;
+
+
+    const dLat =
+        (lat2 - lat1) *
+        Math.PI / 180;
+
+
+    const dLon =
+        (lon2 - lon1) *
+        Math.PI / 180;
+
+
+    const a =
+
+        Math.sin(dLat / 2) ** 2
+
+        +
+
+        Math.cos(
+
+            lat1 *
+            Math.PI / 180
+
+        )
+
+        *
+
+        Math.cos(
+
+            lat2 *
+            Math.PI / 180
+
+        )
+
+        *
+
+        Math.sin(dLon / 2) ** 2;
+
+
+    const c =
+
+        2 *
+
+        Math.atan2(
+
+            Math.sqrt(a),
+
+            Math.sqrt(1 - a)
+
+        );
+
+
+    return R * c;
+
+}
+
+
+/* ==================================
+   CLUB VERIFICATION
+================================== */
+
+window.verifyClub =
+async function () {
+
+    const enteredCode =
+        document.getElementById(
+            "clubCode"
+        ).value.trim();
+
+
+    const correctCode =
+        clubs[student.club].code;
+
+
+    if (enteredCode !== correctCode) {
+
+        document.getElementById(
+            "clubStatus"
+        ).className =
+            "status error";
+
+
+        document.getElementById(
+            "clubStatus"
+        ).innerHTML =
+
+            "❌ Incorrect club code.";
+
+        return;
+    }
+
+
+    clubVerified = true;
+
+
+    document.getElementById(
+        "clubStatus"
+    ).className =
+        "status success";
+
+
+    document.getElementById(
+        "clubStatus"
+    ).innerHTML =
+
+        "✅ Club verified.";
+
+
+    await submitAttendance();
+
+};
+
+
+/* ==================================
+   SUBMIT ATTENDANCE
+================================== */
+
+async function submitAttendance() {
+
+    if (!gpsVerified ||
+        !clubVerified) {
+
+        return;
+    }
+
+
+    try {
+
+        const now =
+            new Date();
+
+
+        /*
+        Save attendance to Firestore.
+        Firebase Cloud Function will detect
+        this document and send SMS through MSG91.
+        */
+
+        await addDoc(
+
+            collection(
+
+                db,
+
+                "attendance"
+
+            ),
+
+            {
+
+                studentName:
+                    student.name,
+
+                registerNo:
+                    student.registerNo,
+
+                club:
+                    student.club,
+
+                date:
+                    now.toLocaleDateString(
+                        "en-IN"
+                    ),
+
+                time:
+                    now.toLocaleTimeString(
+                        "en-IN"
+                    ),
+
+                gpsVerified:
+                    true,
+
+                clubVerified:
+                    true,
+
+                verified:
+                    true,
+
+                status:
+                    "Club Attendance",
+
+                wardenMobile:
+                    WARDEN_MOBILE,
+
+                notificationRequired:
+                    true,
+
+                smsStatus:
+                    "pending",
+
+                createdAt:
+                    now
+
+            }
+
+        );
+
+
+        document.getElementById(
+            "attendanceStatus"
+        ).className =
+            "status success";
+
+
+        document.getElementById(
+            "attendanceStatus"
+        ).innerHTML =
+
+            "✅ ATTENDANCE VERIFIED" +
+
+            "<br><br>" +
+
+            "Student: " +
+            student.name +
+
+            "<br>Register No: " +
+            student.registerNo +
+
+            "<br>Club: " +
+            student.club +
+
+            "<br>Time: " +
+            now.toLocaleTimeString(
+                "en-IN"
+            );
+
+
+        document.getElementById(
+            "smsStatus"
+        ).className =
+            "status info";
+
+
+        document.getElementById(
+            "smsStatus"
+        ).innerHTML =
+
+            "📨 Attendance saved." +
+            "<br>" +
+            "SMS request sent to warden: " +
+            WARDEN_MOBILE;
+
+    }
+
+
+    catch(error) {
+
+        console.error(error);
+
+
+        document.getElementById(
+            "attendanceStatus"
+        ).className =
+            "status error";
+
+
+        document.getElementById(
+            "attendanceStatus"
+        ).innerHTML =
+
+            "❌ Attendance failed." +
+            "<br>" +
+            error.message;
+
+    }
+
+}
+
+</script>
+
+</body>
+
+</html>
+```
